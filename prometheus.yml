@@ -12,12 +12,15 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
 
-  # Nacos 服务监控
+  # Nacos 服务监控 - 使用 actuator/prometheus 端点
   - job_name: 'nacos'
     static_configs:
       - targets: ['nacos:8848']
     metrics_path: '/nacos/actuator/prometheus'
     scrape_interval: 30s
+    basic_auth:
+      username: 'nacos'
+      password: 'nacos'
 
   # Kafka Exporter
   - job_name: 'kafka-exporter'
