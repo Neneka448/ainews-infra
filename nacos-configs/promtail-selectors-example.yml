@@ -1,0 +1,24 @@
+# Nacos 配置管理 - Promtail 采集规则
+# 配置 ID: promtail-selectors
+# 配置分组: DEFAULT_GROUP
+# 命名空间: public
+
+# 示例配置：精确控制日志采集
+- targets:
+    - localhost
+  labels:
+    job: docker-logs-core
+    __path__: /var/lib/docker/containers/*/*-json.log
+    # 只采集核心服务日志
+    compose_service: "nacos,kafka,loki"
+
+- targets:
+    - localhost  
+  labels:
+    job: docker-logs-monitoring
+    __path__: /var/lib/docker/containers/*/*-json.log
+    # 只采集监控相关服务
+    compose_service: "grafana,prometheus,promtail"
+
+# 可以通过 Nacos 控制台动态修改此配置
+# 修改后 30 秒内会自动同步到 Promtail

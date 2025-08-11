@@ -1,0 +1,22 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /positions/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  # Docker 容器日志采集（通过服务发现文件动态配置）
+  - job_name: docker-logs
+    file_sd_configs:
+      - files:
+          - /sd/selectors.yml
+        refresh_interval: 30s
+    pipeline_stages:
+      - docker: {}
+      - labels:
+          compose_service:
+          compose_project:

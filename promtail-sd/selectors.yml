@@ -1,0 +1,71 @@
+# 业务服务日志聚合采集 - 统一目录
+- targets:
+    - localhost
+  labels:
+    job: application-services
+    __path__: /app-logs/*.log
+    service_type: application
+    source: file
+    environment: development
+    # 所有业务服务日志都在 /app-logs/ 目录下
+
+# 基础设施服务日志 - 分开采集
+- targets:
+    - localhost
+  labels:
+    job: infrastructure-nacos
+    __path__: /var/lib/docker/containers/*nacos*/*-json.log
+    service: nacos
+    service_type: infrastructure
+    source: docker
+    environment: development
+
+- targets:
+    - localhost
+  labels:
+    job: infrastructure-kafka
+    __path__: /var/lib/docker/containers/*kafka*/*-json.log
+    service: kafka
+    service_type: infrastructure
+    source: docker
+    environment: development
+
+- targets:
+    - localhost
+  labels:
+    job: infrastructure-loki
+    __path__: /var/lib/docker/containers/*loki*/*-json.log
+    service: loki
+    service_type: infrastructure
+    source: docker
+    environment: development
+
+- targets:
+    - localhost
+  labels:
+    job: infrastructure-grafana
+    __path__: /var/lib/docker/containers/*grafana*/*-json.log
+    service: grafana
+    service_type: infrastructure
+    source: docker
+    environment: development
+
+- targets:
+    - localhost
+  labels:
+    job: infrastructure-prometheus
+    __path__: /var/lib/docker/containers/*prometheus*/*-json.log
+    service: prometheus
+    service_type: infrastructure
+    source: docker
+    environment: development
+
+- targets:
+    - localhost
+  labels:
+    job: infrastructure-promtail
+    __path__: /var/lib/docker/containers/*promtail*/*-json.log
+    service: promtail
+    service_type: infrastructure
+    source: docker
+    environment: development
