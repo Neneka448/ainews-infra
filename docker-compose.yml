@@ -73,7 +73,7 @@ services:
       - ./promtail-sd:/sd:ro
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock
-      - app-logs:/app-logs:ro  # 添加应用日志目录挂载
+      - app-logs:/app-logs:ro # 添加应用日志目录挂载
     depends_on:
       - loki
 
@@ -133,6 +133,28 @@ services:
       - grafana
       - kafka-exporter
 
+  zipkin:
+    image: openzipkin/zipkin:3.4
+    container_name: zipkin
+    environment:
+      - STORAGE_TYPE=mem
+      - JAVA_OPTS=-Xms128m -Xmx256m
+      # 启用Prometheus metrics
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=health,info,prometheus
+    ports:
+      - "9411:9411"
+    volumes:
+      - zipkin-data:/zipkin
+    healthcheck:
+      test: [ "CMD", "wget", "--spider", "-q", "http://localhost:9411/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    depends_on:
+      - kafka
+      - prometheus
+
 volumes:
   nacos-data:
   kafka-data:
@@ -140,6 +162,7 @@ volumes:
   grafana-data:
   promtail-positions:
   prom-data:
-  app-logs:  # 统一的应用服务日志卷
+  app-logs: # 统一的应用服务日志卷
+  zipkin-data:
 
 

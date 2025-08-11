@@ -48,3 +48,10 @@ scrape_configs:
       - targets: ['promtail:9080']
     metrics_path: '/metrics'
     scrape_interval: 30s
+
+  # Zipkin 监控
+  - job_name: 'zipkin'
+    static_configs:
+      - targets: ['zipkin:9411']
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 30s

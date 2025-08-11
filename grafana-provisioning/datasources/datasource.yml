@@ -18,3 +18,17 @@ datasources:
     isDefault: false
     jsonData:
       timeInterval: 15s
+
+  - name: Zipkin
+    type: zipkin
+    access: proxy
+    url: http://zipkin:9411
+    isDefault: false
+    jsonData:
+      nodeMaxConcurrentRequests: 20
+      tracesToLogsV2:
+        datasourceUid: loki
+        spanStartTimeShift: '1h'
+        spanEndTimeShift: '-1h'
+        filterByTraceID: false
+        filterBySpanID: false
