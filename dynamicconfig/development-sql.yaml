@@ -1,0 +1,39 @@
+############################################################
+# Temporal dynamic config (development / single MySQL)
+# 仅放少量常用开关；后续需要可继续扩展。
+# 语法 (v1.28+): 顶层为 Map: key: [ {value: <..>, constraints: {...}} ]
+############################################################
+
+# 关闭客户端版本强校验（本地多语言 SDK 便于调试）
+frontend.enableClientVersionCheck:
+  - value: false
+
+# 默认命名空间缓存刷新策略
+system.forceSearchAttributesCacheRefreshOnRead:
+  - value: true
+
+# Frontend / History 组件本地限流（适当放宽 dev）
+frontend.persistenceMaxQPS:
+  - value: 3000
+history.persistenceMaxQPS:
+  - value: 3000
+
+# 允许在可见性（visibility）表使用高级搜索属性（MySQL 单节点测试用）
+system.enableReadVisibilityFromES:
+  - value: false
+
+# Worker 构建 ID 分区（单节点全部为 1）
+matching.numTaskqueueWritePartitions:
+  - value: 1
+matching.numTaskqueueReadPartitions:
+  - value: 1
+
+# 限制 TaskQueue 节流日志速率
+taskQueue.throttledLogRPS:
+  - value: 20
+
+# 开发环境允许空的 search attributes map
+frontend.validSearchAttributes:
+  - value: {}
+
+# NOTE: 生产环境请根据实际负载与安全策略重新审视以上配置。

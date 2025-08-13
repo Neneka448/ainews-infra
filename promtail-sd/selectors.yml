@@ -69,3 +69,14 @@
     service_type: infrastructure
     source: docker
     environment: development
+
+- targets:
+    - localhost
+  labels:
+    job: temporal-server
+    __path__: /var/lib/docker/containers/*temporal*/*-json.log
+    service: temporal
+    service_type: workflow
+    source: docker
+    environment: development
+    temporal_role: server
